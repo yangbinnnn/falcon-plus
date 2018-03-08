@@ -36,15 +36,17 @@ type SenderConfig struct {
 }
 
 type GlobalConfig struct {
-	Debug     bool          `json:"debug"`
-	Hosts     string        `json:"hosts"`
-	Database  string        `json:"database"`
-	MaxConns  int           `json:"maxConns"`
-	MaxIdle   int           `json:"maxIdle"`
-	Listen    string        `json:"listen"`
-	Trustable []string      `json:"trustable"`
-	Http      *HttpConfig   `json:"http"`
-	Sender    *SenderConfig `json:"sender"`
+	Debug        bool          `json:"debug"`
+	Hosts        string        `json:"hosts"`
+	Database     string        `json:"database"`
+	MaxConns     int           `json:"maxConns"`
+	MaxIdle      int           `json:"maxIdle"`
+	Listen       string        `json:"listen"`
+	Trustable    []string      `json:"trustable"`
+	AgentStep    int64         `json:"agentStep"`
+	AgentMaxIdle int64         `json:"agentMaxIdel"`
+	Http         *HttpConfig   `json:"http"`
+	Sender       *SenderConfig `json:"sender"`
 }
 
 var (

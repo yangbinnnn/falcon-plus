@@ -10,6 +10,8 @@
         "enabled": true,
         "listen": "0.0.0.0:6031"
     },
+    "agentStep": 60,
+    "agentMaxIdle": 3600,
     "sender":{
         "enabled": true,
         "connectTimeout": 500,
