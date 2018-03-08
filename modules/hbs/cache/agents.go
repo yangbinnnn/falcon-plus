@@ -19,10 +19,11 @@ package cache
 // 提供http接口查询机器信息，排查重名机器的时候比较有用
 
 import (
-	"github.com/open-falcon/falcon-plus/common/model"
-	"github.com/open-falcon/falcon-plus/modules/hbs/db"
 	"sync"
 	"time"
+
+	"github.com/open-falcon/falcon-plus/common/model"
+	"github.com/open-falcon/falcon-plus/modules/hbs/db"
 )
 
 type SafeAgents struct {
@@ -101,6 +102,22 @@ func deleteStaleAgents() {
 		curr, _ := Agents.Get(keys[i])
 		if curr.LastUpdate < before {
 			Agents.Delete(curr.ReportRequest.Hostname)
+		}
+	}
+}
+
+func agentNoHbs() {
+	before := time.Now().Unix() - 3600
+	keys := Agents.Keys()
+	count := len(keys)
+	if count == 0 {
+		return
+	}
+
+	for i := 0; i < count; i++ {
+		curr, _ := Agents.Get(keys[i])
+		if curr.LastUpdate < before {
+
 		}
 	}
 }

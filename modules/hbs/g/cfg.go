@@ -16,9 +16,10 @@ package g
 
 import (
 	"encoding/json"
-	"github.com/toolkits/file"
 	"log"
 	"sync"
+
+	"github.com/toolkits/file"
 )
 
 type HttpConfig struct {
@@ -26,15 +27,24 @@ type HttpConfig struct {
 	Listen  string `json:"listen"`
 }
 
+type SenderConfig struct {
+	Enabled        bool   `json:"enabled"`
+	TransferAddr   string `json:"transferAddr"`
+	ConnectTimeout int32  `json:"connectTimeout"`
+	RequestTimeout int32  `json:"requestTimeout"`
+	Batch          int32  `json:"batch"`
+}
+
 type GlobalConfig struct {
-	Debug     bool        `json:"debug"`
-	Hosts     string      `json:"hosts"`
-	Database  string      `json:"database"`
-	MaxConns  int         `json:"maxConns"`
-	MaxIdle   int         `json:"maxIdle"`
-	Listen    string      `json:"listen"`
-	Trustable []string    `json:"trustable"`
-	Http      *HttpConfig `json:"http"`
+	Debug     bool          `json:"debug"`
+	Hosts     string        `json:"hosts"`
+	Database  string        `json:"database"`
+	MaxConns  int           `json:"maxConns"`
+	MaxIdle   int           `json:"maxIdle"`
+	Listen    string        `json:"listen"`
+	Trustable []string      `json:"trustable"`
+	Http      *HttpConfig   `json:"http"`
+	Sender    *SenderConfig `json:"sender"`
 }
 
 var (
