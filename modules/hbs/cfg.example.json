@@ -11,7 +11,7 @@
         "listen": "0.0.0.0:6031"
     },
     "agentStep": 60,
-    "agentMaxIdle": 3600,
+    "agentMaxIdle": 180,
     "sender":{
         "enabled": true,
         "connectTimeout": 500,

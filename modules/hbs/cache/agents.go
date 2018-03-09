@@ -115,17 +115,19 @@ func deleteStaleAgents() {
 	}
 }
 
-// AgentNoHbs 检查agent hbs 间隔时间，超过AgentMaxIdle 则agent.alive = -1
-func AgentNoHbs() {
+// CheckAgentHbs 检查agent hbs 间隔时间，超过AgentMaxIdle 则agent.alive = -1
+func CheckAgentHbs() {
 	duration := time.Second * time.Duration(g.Config().AgentMaxIdle)
 	for {
 		time.Sleep(duration)
-		agentNoHbs()
-		log.Printf("agent no hbs check, %f, now %s", duration.Seconds(), ttime.FormatTs(time.Now().Unix()))
+		checkAgentHbs()
+		if g.Config().Debug {
+			log.Printf("check agent hbs, duration %f, now %s", duration.Seconds(), ttime.FormatTs(time.Now().Unix()))
+		}
 	}
 }
 
-func agentNoHbs() {
+func checkAgentHbs() {
 	before := time.Now().Unix() - g.Config().AgentMaxIdle
 	keys := Agents.Keys()
 	count := len(keys)

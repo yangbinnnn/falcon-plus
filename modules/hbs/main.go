@@ -44,7 +44,7 @@ func main() {
 	cache.Init()
 
 	go cache.DeleteStaleAgents()
-	go cache.AgentNoHbs()
+	go cache.CheckAgentHbs()
 
 	go http.Start()
 	go rpc.Start()
