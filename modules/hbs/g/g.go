@@ -24,8 +24,9 @@ import (
 // 1.0.8: bugfix loop init cache
 // 1.0.9: update host table anyway
 // 1.1.0: remove Checksum when query plugins
+// 1.1.1: add CheckAgentHbs
 const (
-	VERSION = "1.1.0"
+	VERSION = "1.1.1"
 )
 
 func init() {
