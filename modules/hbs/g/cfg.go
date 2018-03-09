@@ -44,7 +44,7 @@ type GlobalConfig struct {
 	Listen       string        `json:"listen"`
 	Trustable    []string      `json:"trustable"`
 	AgentStep    int64         `json:"agentStep"`
-	AgentMaxIdle int64         `json:"agentMaxIdel"`
+	AgentMaxIdle int64         `json:"agentMaxIdle"`
 	Http         *HttpConfig   `json:"http"`
 	Sender       *SenderConfig `json:"sender"`
 }

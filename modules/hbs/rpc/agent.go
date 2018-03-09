@@ -16,13 +16,16 @@ package rpc
 
 import (
 	"bytes"
+	"log"
+	"sort"
+	"strings"
+	"time"
+
 	"github.com/open-falcon/falcon-plus/common/model"
 	"github.com/open-falcon/falcon-plus/common/utils"
 	"github.com/open-falcon/falcon-plus/modules/hbs/cache"
 	"github.com/open-falcon/falcon-plus/modules/hbs/g"
-	"sort"
-	"strings"
-	"time"
+	ttime "github.com/toolkits/time"
 )
 
 func (t *Agent) MinePlugins(args model.AgentHeartbeatRequest, reply *model.AgentPluginsResponse) error {
@@ -43,6 +46,9 @@ func (t *Agent) ReportStatus(args *model.AgentReportRequest, reply *model.Simple
 	}
 
 	cache.Agents.Put(args)
+	if g.Config().Debug {
+		log.Printf("agent %s hbs at %s", args.Hostname, ttime.FormatTs(time.Now().Unix()))
+	}
 
 	return nil
 }

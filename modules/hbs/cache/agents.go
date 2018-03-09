@@ -19,6 +19,7 @@ package cache
 // 提供http接口查询机器信息，排查重名机器的时候比较有用
 
 import (
+	"log"
 	"sync"
 	"time"
 
@@ -28,6 +29,7 @@ import (
 	"github.com/open-falcon/falcon-plus/modules/hbs/sender"
 
 	cutils "github.com/open-falcon/falcon-plus/common/utils"
+	ttime "github.com/toolkits/time"
 )
 
 type SafeAgents struct {
@@ -55,10 +57,11 @@ func (this *SafeAgents) Put(req *model.AgentReportRequest) {
 		agentInfo.ReportRequest.PluginVersion != req.PluginVersion {
 
 		db.UpdateAgent(val)
-		this.Lock()
-		this.M[req.Hostname] = val
-		this.Unlock()
 	}
+	// 更新Hbs 时间
+	this.Lock()
+	this.M[req.Hostname] = val
+	this.Unlock()
 }
 
 func (this *SafeAgents) Get(hostname string) (*model.AgentUpdateInfo, bool) {
@@ -112,12 +115,13 @@ func deleteStaleAgents() {
 	}
 }
 
+// AgentNoHbs 检查agent hbs 间隔时间，超过AgentMaxIdle 则agent.alive = -1
 func AgentNoHbs() {
 	duration := time.Second * time.Duration(g.Config().AgentMaxIdle)
 	for {
 		time.Sleep(duration)
 		agentNoHbs()
-		sender.SendMockOnceAsync()
+		log.Printf("agent no hbs check, %f, now %s", duration.Seconds(), ttime.FormatTs(time.Now().Unix()))
 	}
 }
 
@@ -134,8 +138,13 @@ func agentNoHbs() {
 		if curr.LastUpdate < before {
 			key := cutils.PK(curr.ReportRequest.Hostname, "agent.alive", nil)
 			genMock(genTs(time.Now().Unix(), g.Config().AgentStep), key, curr.ReportRequest.Hostname)
+			if g.Config().Debug {
+				log.Printf("agent %s no hbs in %d, lastUpdate %s", curr.ReportRequest.Hostname, g.Config().AgentMaxIdle, ttime.FormatTs(curr.LastUpdate))
+			}
 		}
 	}
+
+	sender.SendMockOnceAsync()
 }
 
 func genMock(ts int64, key, hostname string) {
