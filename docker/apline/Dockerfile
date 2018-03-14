@@ -31,7 +31,7 @@ COPY ${DOCKER_DIR}/apline/run.sh ${FALCON_DIR}/entrypoint.sh
 
 RUN \
   echo "http://mirrors.aliyun.com/alpine/v3.7/main/" > /etc/apk/repositories \
-  echo "http://mirrors.aliyun.com/alpine/v3.7/community/" >> /etc/apk/repositories \
+  && echo "http://mirrors.aliyun.com/alpine/v3.7/community/" >> /etc/apk/repositories \
   && apk add --no-cache tzdata ca-certificates bash curl git gcc \
   python-dev mysql-dev libc-dev openldap-dev py-virtualenv mysql mysql-client redis\
   && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
