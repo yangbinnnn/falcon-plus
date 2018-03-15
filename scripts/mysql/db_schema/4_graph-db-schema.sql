@@ -1,11 +1,10 @@
-CREATE DATABASE graph
+CREATE DATABASE IF NOT EXISTS graph
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
 USE graph;
 SET NAMES utf8;
 
-DROP TABLE if exists `graph`.`endpoint`;
-CREATE TABLE `graph`.`endpoint` (
+CREATE TABLE IF NOT EXISTS `endpoint` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `endpoint` varchar(255) NOT NULL DEFAULT '',
   `ts` int(11) DEFAULT NULL,
@@ -15,8 +14,7 @@ CREATE TABLE `graph`.`endpoint` (
   UNIQUE KEY `idx_endpoint` (`endpoint`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE if exists `graph`.`endpoint_counter`;
-CREATE TABLE `graph`.`endpoint_counter` (
+CREATE TABLE IF NOT EXISTS `endpoint_counter` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `endpoint_id` int(10) unsigned NOT NULL,
   `counter` varchar(255) NOT NULL DEFAULT '',
@@ -29,8 +27,7 @@ CREATE TABLE `graph`.`endpoint_counter` (
   UNIQUE KEY `idx_endpoint_id_counter` (`endpoint_id`, `counter`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE if exists `graph`.`tag_endpoint`;
-CREATE TABLE `graph`.`tag_endpoint` (
+CREATE TABLE IF NOT EXISTS `tag_endpoint` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `tag` varchar(255) NOT NULL DEFAULT '' COMMENT 'srv=tv',
   `endpoint_id` int(10) unsigned NOT NULL,
