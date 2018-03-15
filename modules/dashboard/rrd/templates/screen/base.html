@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% import "screen/screen_layout.html" as screen_layout %}
+
+{%block title%}Falon+ Screen{%endblock%}
+
+{%block body_head%}
+<body>
+{%endblock%}
+
+{% block head_js %}
+{{super()}}
+<script src="/static/js/jquery.flot.js?_v=0.0.3"></script>
+<script src="{{url_for('static', filename='js/jquery.flot.time.js')}}"></script>
+<script src="{{url_for('static', filename='js/jquery.flot.selection.js')}}"></script>
+<script src="{{url_for('static', filename='js/underscore.js')}}"></script>
+<script src="{{url_for('static', filename='js/screen-edit.js')}}"></script>
+<!-- for embed iframe auto height; see http://davidjbradshaw.github.io/iframe-resizer/  -->
+<script src="{{url_for('static', filename='js/iframeResizer.contentWindow.js')}}"></script>
+<script src="/static/js/screen.js?_v=0.0.3"></script>
+<script>
+function fn_query(kvs) {
+    var href = $.query;
+    for (var k in kvs){
+        href = href.set(k, kvs[k]);
+    }
+    window.location.href = href.toString();
+    return false;
+}
+
+</script>
+
+{%endblock%}
+
+{%block navbar%}
+    {%include "navbar.html"%}
+{%endblock%}
+
+{%block container%} {% endblock %}
