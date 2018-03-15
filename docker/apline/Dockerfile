@@ -23,11 +23,11 @@ RUN \
 FROM python:2.7.14-alpine3.7
 LABEL maintainer yangbinnnn@gmail.com
 ENV FALCON_DIR=/root/monitor DOCKER_DIR=docker MYSQL_DATA_DIR=/root/mysql MYSQL_USER=root
-ENV MYSQL_DB_SCHEMA_DIR=/root/monitor/schema
+ENV MYSQL_SCHEMA_DIR=/root/monitor/schema
 
 COPY --from=build-base ${FALCON_DIR} ${FALCON_DIR}
-COPY scripts/mysql/db_schema/ ${MYSQL_DB_SCHEMA_DIR}
-COPY ${DOCKER_DIR}/apline/run.sh ${FALCON_DIR}/entrypoint.sh
+COPY scripts/mysql/db_schema/ ${MYSQL_SCHEMA_DIR}
+COPY ${DOCKER_DIR}/apline/entrypoint.sh ${FALCON_DIR}/entrypoint.sh
 
 RUN \
   echo "http://mirrors.aliyun.com/alpine/v3.7/main/" > /etc/apk/repositories \
@@ -36,8 +36,6 @@ RUN \
   python-dev mysql-dev libc-dev openldap-dev py-virtualenv mysql mysql-client redis\
   && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
-  && mysql_install_db --user=${MYSQL_USER} --datadir=${MYSQL_DATA_DIR} \
-  && cd ${FALCON_DIR} && git clone https://github.com/open-falcon/dashboard.git \
   && cd ${FALCON_DIR}/dashboard && virtualenv ./env && ./env/bin/pip install -r pip_requirements.txt \
   && rm -rf /root/.cache
 
@@ -48,4 +46,4 @@ RUN \
 # dashboard: 8081
 EXPOSE 6036 8433 8081
 WORKDIR ${FALCON_DIR}
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["bash", "entrypoint.sh"]
