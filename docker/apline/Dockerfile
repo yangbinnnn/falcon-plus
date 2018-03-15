@@ -36,7 +36,7 @@ RUN \
   python-dev mysql-dev libc-dev openldap-dev py-virtualenv mysql mysql-client redis\
   && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
-  && cd ${FALCON_DIR}/dashboard && virtualenv ./env && ./env/bin/pip install -r pip_requirements.txt \
+  && cd ${FALCON_DIR}/dashboard && virtualenv ./env && ./env/bin/pip install -r pip_requirements.txt -i https://pypi.doubanio.com/simple/ \
   && rm -rf /root/.cache
 
 
