@@ -66,6 +66,7 @@ pack: checkbin
 	@(cd ./out && ln -s ./agent/plugins/ ./plugins)
 	@cp -r ./modules/api/data ./out/api/
 	@mkdir out/graph/data
+	@cp -r ./modules/dashboard ./out/
 	@bash ./config/confgen.sh
 	@cp $(TARGET) ./out/$(TARGET)
 	tar -C out -zcf open-falcon-v$(VERSION).tar.gz .
