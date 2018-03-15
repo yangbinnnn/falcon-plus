@@ -17,6 +17,7 @@ package g
 import (
 	"encoding/json"
 	"log"
+	"os"
 	"sync"
 
 	"github.com/toolkits/file"
@@ -109,6 +110,28 @@ func ParseConfig(cfg string) {
 
 	configLock.Lock()
 	defer configLock.Unlock()
+	useEnvConfig(&c)
 	config = &c
 	log.Println("read config file:", cfg, "successfully")
+}
+
+func useEnvConfig(cfg *GlobalConfig) {
+	if os.Getenv("USE_ENV_CONFIG") != "true" {
+		return
+	}
+	log.Println("use env overwrite the config")
+	// overwrite config
+
+	mail := os.Getenv("ALARM_MAIL_ADDR")
+	dashboard := os.Getenv("ALARM_DASHBOARD_ADDR")
+
+	if mail != "" {
+		cfg.Api.Mail = mail
+		log.Println("use ALARM_MAIL_ADDR:", mail)
+	}
+
+	if dashboard != "" {
+		cfg.Api.Dashboard = dashboard
+		log.Println("use ALARM_DASHBOARD_ADDR:", dashboard)
+	}
 }

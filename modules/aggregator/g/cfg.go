@@ -16,9 +16,12 @@ package g
 
 import (
 	"encoding/json"
-	"github.com/toolkits/file"
 	"log"
+	"os"
+	"strconv"
 	"sync"
+
+	"github.com/toolkits/file"
 )
 
 type HttpConfig struct {
@@ -84,6 +87,18 @@ func ParseConfig(cfg string) {
 
 	configLock.Lock()
 	defer configLock.Unlock()
+	useEnvConfig(&c)
 	config = &c
 	log.Println("read config file:", cfg, "successfully")
+}
+
+func useEnvConfig(cfg *GlobalConfig) {
+	if os.Getenv("USE_ENV_CONFIG") != "true" {
+		return
+	}
+	log.Println("use env overwrite the config")
+	// overwrite config
+
+	debug, _ := strconv.ParseBool(os.Getenv("DEBUG"))
+	cfg.Debug = debug
 }

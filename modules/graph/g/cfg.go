@@ -17,6 +17,7 @@ package g
 import (
 	"encoding/json"
 	"log"
+	"os"
 	"strconv"
 	"sync/atomic"
 	"unsafe"
@@ -109,8 +110,27 @@ func ParseConfig(cfg string) {
 	// 需要md5的前多少位参与ioWorker的分片计算
 	c.FirstBytesSize = len(strconv.FormatInt(int64(c.IOWorkerNum), 16))
 
+	useEnvConfig(&c)
+
 	// set config
 	atomic.StorePointer(&ptr, unsafe.Pointer(&c))
 
 	log.Println("g.ParseConfig ok, file", cfg)
+}
+
+func useEnvConfig(cfg *GlobalConfig) {
+	if os.Getenv("USE_ENV_CONFIG") != "true" {
+		return
+	}
+	log.Println("use env overwrite the config")
+	// overwrite config
+
+	debug, _ := strconv.ParseBool(os.Getenv("DEBUG"))
+	cfg.Debug = debug
+
+	rddStorage := os.Getenv("RRD_STORAGE_DIR")
+	if rddStorage != "" {
+		cfg.RRD.Storage = rddStorage
+		log.Println("use RRD_STORAGE_DIR:", rddStorage)
+	}
 }
