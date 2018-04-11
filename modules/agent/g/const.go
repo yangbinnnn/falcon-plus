@@ -25,8 +25,9 @@ import (
 // 5.1.0: 同步插件的时候不再使用checksum机制
 // 5.1.1: 修复往多个transfer发送数据的时候crash的问题
 // 5.1.2: ignore mount point when blocks=0
+// 5.1.3: 修复插件执行失败导致agent 意外退出; 自动填充插件Endpoint
 const (
-	VERSION          = "5.1.2"
+	VERSION          = "5.1.3"
 	COLLECT_INTERVAL = time.Second
 	URL_CHECK_HEALTH = "url.check.health"
 	NET_PORT_LISTEN  = "net.port.listen"

@@ -134,5 +134,20 @@ func PluginRun(plugin *Plugin) {
 		return
 	}
 
+	hostname, err := g.Hostname()
+	if err != nil {
+		log.Println("[ERROR] get hostname fail")
+		return
+	}
+
+	// 如果插件中没有配置Endpoint 则使用当前agent 的Endpint
+	// 适用于需要统一agent 和插件Endpoint的情况，只需将插件
+	// Endpoint 置空即可
+	for _, metric := range metrics {
+		if metric.Endpoint == "" {
+			metric.Endpoint = hostname
+		}
+	}
+
 	g.SendToTransfer(metrics)
 }
